@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const tripTypes = ["adventure", "cultural", "food", "relaxation", "nature", "shopping"];
 const experienceOptions = ["hiking", "museums", "street food", "beaches", "nightlife", "historical sites"];
@@ -14,6 +15,8 @@ const TripPreferences = () => {
   const [recommendations, setRecommendations] = useState([]);
   const [loading, setLoading] = useState(false);
   const [recError, setRecError] = useState("");
+
+  const navigate = useNavigate();
 
   const handlePrefChange = (option) => {
     setPreferences((prev) =>
@@ -48,6 +51,11 @@ const TripPreferences = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleSelectDestination = (rec) => {
+    localStorage.setItem("selectedDestination", JSON.stringify(rec));
+    navigate("/flights");
   };
 
   return (
@@ -89,6 +97,9 @@ const TripPreferences = () => {
               {recommendations.map((rec, idx) => (
                 <li key={idx}>
                   <strong>{rec.location}</strong> (IATA: {rec.iataCode}) - ${rec.price}
+                  <button style={{ marginLeft: 12 }} onClick={() => handleSelectDestination(rec)}>
+                    Select
+                  </button>
                 </li>
               ))}
             </ul>

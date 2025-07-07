@@ -14,7 +14,7 @@ const Signup = () => {
     try {
       const res = await axios.post("/api/auth/signup", { name, email, password });
       localStorage.setItem("token", res.data.token);
-      navigate("/");
+      navigate("/preferences");
     } catch (err) {
       setError(err.response?.data?.message || "Signup failed");
     }
